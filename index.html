@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="kz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кітапханада кітап беру процесі — тапсырма</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #ffffff; color: #111; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 16px; }
+    header { padding: 8px 0; border-bottom: 1px solid #ccc; margin-bottom: 16px; }
+    header h1 { font-size: 20px; margin: 0; }
+
+    /* Панель логикасы */
+    .panel { border: 1px solid #000; padding: 12px; border-radius: 0; }
+    .panel h2 { font-size: 18px; margin: 0 0 12px; }
+    .field { margin-bottom: 10px; }
+    .label { display: block; font-size: 14px; margin-bottom: 6px; }
+    .input, .log { width: 100%; padding: 8px; border: 1px solid #000; border-radius: 0; background: #fff; }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .checkbox { display: flex; align-items: center; gap: 8px; }
+
+    /* Батырмалар */
+    .btn { padding: 8px 12px; border: 1px solid #000; background: #fff; cursor: pointer; }
+    .btn:active { background: #eee; }
+
+    /* Қадам және Нәтиже */
+    .status { display: flex; gap: 12px; align-items: center; margin: 10px 0; }
+    .badge { border: 1px solid #000; padding: 4px 8px; font-size: 12px; }
+
+    /* Түсіндірме */
+    .note { font-size: 13px; color: #333; margin-top: 10px; }
+    .footer { margin-top: 20px; font-size: 12px; color: #444; border-top: 1px solid #ccc; padding-top: 10px; }
+
+    /* Адаптация */
+    @media (max-width: 600px) {
+      .row { flex-direction: column; align-items: flex-start; }
+      header h1 { font-size: 18px; }
+      .panel h2 { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Кітапханадан кітап беру процесі (жоба логикасы)</h1>
+    </header>
+
+    <section class="panel" aria-label="Логика панелі">
+      <h2>Кітапты сұрау және беру логикасы</h2>
+
+      <div class="field">
+        <label class="label" for="bookName">Кітап атауы:</label>
+        <input id="bookName" class="input" type="text" placeholder="Мысалы: Алгоритмдер">
+      </div>
+
+      <div class="field">
+        <div class="checkbox"><input id="hasBook" type="checkbox"><label for="hasBook">Кітап қолда бар</label></div>
+        <div class="checkbox"><input id="hasDebt" type="checkbox"><label for="hasDebt">Оқырманда қарыз бар</label></div>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="runBtn">Процесті іске қосу</button>
+        <button class="btn" id="clearBtn">Тазалау</button>
+      </div>
+
+      <div class="status">
+        <div class="badge">Қадам: <span id="step">Бастау</span></div>
+        <div class="badge">Нәтиже: <span id="result">—</span></div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="logBox">Журнал:</label>
+        <textarea id="logBox" class="log" rows="5" placeholder="// Процесс журналы осы жерде көрсетіледі"></textarea>
+      </div>
+
+      <p class="note">
+        Логика: Кітап бар → Қарыз жоқ → Беру және тіркеу; әйтпесе тиісті хабарламалар.
+      </p>
+    </section>
+
+    <footer class="footer">© 2025. кукыктар вроде как коргалады.</footer>
+  </div>
+
+  <script>
+    // Ешқандай анимация/стикер жоқ — тек таза логика
+    const bookName = document.getElementById('bookName');
+    const hasBook = document.getElementById('hasBook');
+    const hasDebt = document.getElementById('hasDebt');
+    const runBtn = document.getElementById('runBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const stepEl = document.getElementById('step');
+    const resultEl = document.getElementById('result');
+    const logBox = document.getElementById('logBox');
+
+    function log(msg) {
+      logBox.value += (logBox.value ? '\n' : '') + msg;
+    }
+
+    function reset() {
+      stepEl.textContent = 'Бастау';
+      resultEl.textContent = '—';
+      logBox.value = '';
+      bookName.value = '';
+      hasBook.checked = false;
+      hasDebt.checked = false;
+    }
+
+    runBtn.addEventListener('click', () => {
+      log('Бастау');
+      stepEl.textContent = 'Енгізу';
+      log('Оқырман кітап атын сұрайды: ' + (bookName.value || '(аталмаған)'));
+
+      stepEl.textContent = 'Процесс';
+      log('Кітапханашы кітапты тексереді');
+
+      stepEl.textContent = 'Шешім 1';
+      log('Кітап қолда бар ма? → ' + (hasBook.checked ? 'ИӘ' : 'ЖОҚ'));
+      if (!hasBook.checked) {
+        resultEl.textContent = 'Кітап жоқ';
+        log('Нәтиже: Кітап жоқ. Аяқтау.');
+        stepEl.textContent = 'Аяқтау';
+        return;
+      }
+
+      stepEl.textContent = 'Шешім 2';
+      log('Оқырманда қарыз бар ма? → ' + (hasDebt.checked ? 'ИӘ' : 'ЖОҚ'));
+      if (hasDebt.checked) {
+        resultEl.textContent = 'Қарызды өтеңіз';
+        log('Нәтиже: Қарызды өтеңіз. Аяқтау.');
+        stepEl.textContent = 'Аяқтау';
+        return;
+      }
+
+      stepEl.textContent = 'Процесс';
+      resultEl.textContent = 'Беру және тіркеу';
+      log('Нәтиже: Кітапты беру және тіркеу. Аяқтау.');
+      stepEl.textContent = 'Аяқтау';
+    });
+
+    clearBtn.addEventListener('click', reset);
+  </script>
+</body>
+</html>
