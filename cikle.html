@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="kz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Матрицалық Орналасу және Блок-схемалар</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        h2 {
+            color: #34495e;
+            margin: 25px 0 15px;
+            font-size: 22px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 20px 0 10px;
+            font-size: 18px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .flowchart-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .flowchart-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .terminal {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .process {
+            background: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 200px;
+        }
+        .decision {
+            background: #f39c12;
+            color: white;
+            padding: 20px;
+            transform: rotate(45deg);
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .decision-text {
+            transform: rotate(-45deg);
+            font-weight: bold;
+            text-align: center;
+            font-size: 13px;
+        }
+        .input-output {
+            background: #9b59b6;
+            color: white;
+            padding: 15px 30px;
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+            text-align: center;
+            min-width: 200px;
+        }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #2c3e50;
+        }
+        .branches {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            width: 100%;
+        }
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .branch-label {
+            background: #2c3e50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .symbol-table {
+            margin: 20px 0;
+        }
+        .symbol-row {
+            display: grid;
+            grid-template-columns: 100px 150px 1fr;
+            gap: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            align-items: center;
+        }
+        .symbol-row:hover {
+            background: #f8f9fa;
+        }
+        .symbol {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .advantages {
+            background: #ecf9f2;
+            padding: 15px;
+            border-left: 4px solid #27ae60;
+            margin: 15px 0;
+        }
+        .challenges {
+            background: #fef5e7;
+            padding: 15px;
+            border-left: 4px solid #f39c12;
+            margin: 15px 0;
+        }
+        ul {
+            margin: 10px 0 15px 30px;
+        }
+        li {
+            margin: 8px 0;
+            color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            table {
+                font-size: 12px;
+            }
+            table th, table td {
+                padding: 8px;
+            }
+            .branches {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .symbol-row {
+                grid-template-columns: 80px 1fr;
+                font-size: 13px;
+            }
+            .symbol-row > div:nth-child(2) {
+                grid-column: 2;
+            }
+            .symbol-row > div:nth-child(3) {
+                grid-column: 1 / -1;
+            }
+            .decision {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Матрицалық Орналасу және Блок-схемалар</h1>
+
+        <section>
+            <h2>1️⃣ Матрицалық Құрылым</h2>
+            <p>Матрицалық құрылым – бұл заманауи ұйымдардағы ең икемді, бірақ күрделі басқару модельдерінің бірі. Ол дәстүрлі иерархиялық және таза жобалық құрылымдардың артықшылықтарын біріктіреді.</p>
+
+            <h3>📐 Екі Өлшемді Басқару</h3>
+            <p>Матрицалық құрылымның негізгі идеясы – <strong>қос бағыныстылық (dual reporting)</strong>. Бұл екі өлшем:</p>
+            
+            <ul>
+                <li><strong>Функционалдық Өлшем (Вертикаль):</strong> Дәстүрлі, тұрақты құрылым. Функционалдық Менеджер қызметкердің мамандық деңгейіне, техникалық сапасына, карьералық дамуына жауап береді.</li>
+                <li><strong>Жобалық Өлшем (Горизонталь):</strong> Уақытша, жобаға бағытталған құрылым. Жоба Менеджері нақты жобаның мақсаттарын, кестесін, бюджетін және нәтижесін басқарады.</li>
+            </ul>
+
+            <h3>📋 Матрицалық Құрылымның Түрлері</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Түрі</th>
+                        <th>Сипаттамасы</th>
+                        <th>Басшылық Басымдылығы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Әлсіз (Weak Matrix)</strong></td>
+                        <td>Жоба менеджері көбінесе тек үйлестіруші немесе хабаршы рөлін атқарады. Ресурстарды бөлу туралы негізгі шешімдерді функционалдық менеджер қабылдайды.</td>
+                        <td>Функционалдық Менеджер</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Теңгерімді (Balanced Matrix)</strong></td>
+                        <td>Екі менеджер де тең билікке ие. Қарым-қатынас екі тараптың келісіміне негізделеді. Бұл жиі амбиваленттік (басшылықтың айқын еместігі) тудырады.</td>
+                        <td>Тең Билік</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Күшті (Strong Matrix)</strong></td>
+                        <td>Жоба менеджері толық уақытты билікке ие, ресурстарды бақылайды және көптеген шешімдерді қабылдайды. Функционалдық менеджер техникалық қолдау мен кадрлық дамуды ғана қамтамасыз етеді.</td>
+                        <td>Жоба Менеджері</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="challenges">
+                <h3>⚠️ Басқарудағы Қиындықтар</h3>
+                <ul>
+                    <li><strong>Рөлдердің Айқын Еместігі:</strong> Екі басшыға бағыну қызметкердің қай міндетті бірінші орындау керектігін түсінбеуіне әкелуі мүмкін.</li>
+                    <li><strong>Ресурстық Шиеленістер:</strong> Бір маманды бір уақытта екі түрлі жобаға қажет болғанда, ресурстар үшін талас туындайды.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>2️⃣ Блок-схемалар (Флоучарттар)</h2>
+            <p>Блок-схема – бұл кез келген логикалық немесе физикалық процесті талдау, жобалау, құжаттау және басқару құралы. Ол процестің бастауынан аяқталуына дейінгі қадамдарды көрсетеді.</p>
+
+            <h3>🔷 Символдардың Стандартталуы</h3>
+            <div class="symbol-table">
+                <div class="symbol-row">
+                    <div class="symbol">
+                        <div style="background: #e74c3c; color: white; padding: 10px 20px; border-radius: 50px; font-size: 10px;">Start</div>
+                    </div>
+                    <div><strong>Терминатор</strong></div>
+                    <div>Процесс басталуы/аяқталуы</div>
+                </div>
+                <div class="symbol-row">
+                    <div class="symbol">
+                        <div style="background: #3498db; color: white; padding: 10px 15px; border-radius: 5px; font-size: 10px;">Процесс</div>
+                    </div>
+                    <div><strong>Процесс</strong></div>
+                    <div>Бір немесе бірнеше әрекет, тапсырма</div>
+                </div>
+                <div class="symbol-row">
+                    <div class="symbol">
+                        <div style="background: #f39c12; color: white; padding: 15px; transform: rotate(45deg); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;"><span style="transform: rotate(-45deg); font-size: 8px;">?</span></div>
+                    </div>
+                    <div><strong>Шешім (Decision)</strong></div>
+                    <div>Логикалық шартты тексеру (Иә/Жоқ)</div>
+                </div>
+                <div class="symbol-row">
+                    <div class="symbol">
+                        <div style="background: #9b59b6; color: white; padding: 8px 12px; clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); font-size: 9px;">Input</div>
+                    </div>
+                    <div><strong>Енгізу/Шығару</strong></div>
+                    <div>Сыртқы деректердің енгізілуі немесе шығарылуы</div>
+                </div>
+                <div class="symbol-row">
+                    <div class="symbol">
+                        <div style="font-size: 24px; color: #2c3e50;">→</div>
+                    </div>
+                    <div><strong>Ағын Сызығы</strong></div>
+                    <div>Әрекеттердің орындалу реті</div>
+                </div>
+            </div>
+
+            <div class="advantages">
+                <h3>✅ Флоучарттардың Артықшылығы</h3>
+                <ul>
+                    <li><strong>Түсініктілік:</strong> Сөзбен жазылған ұзын құжаттарға қарағанда, визуалды суреттер логиканы тез қабылдауға мүмкіндік береді.</li>
+                    <li><strong>Қателіктерді Анықтау:</strong> Процестің логикасындағы «өлі аяқтар», қайталанатын циклдар немесе артық қадамдарды оңай табуға болады.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>3️⃣ Кітапхана Процесі – Интерактивті Блок-схема</h2>
+            <p><strong>Сценарий:</strong> Кітапханада кітапты сұрау және оны беру процесі.</p>
+
+            <div class="flowchart-container">
+                <div class="flowchart" id="flowchart">
+                    <div class="flowchart-item">
+                        <div class="terminal">БАСТАУ</div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <div class="flowchart-item">
+                        <div class="input-output">Оқырман кітап атын сұрайды</div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <div class="flowchart-item">
+                        <div class="process">Кітапханашы кітапты тексереді</div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <div class="flowchart-item">
+                        <div class="decision">
+                            <div class="decision-text">Кітап<br>бар ма?</div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+
+                    <div class="branches">
+                        <div class="branch">
+                            <div class="branch-label">ЖОҚ</div>
+                            <div class="arrow"></div>
+                            <div class="process" style="background: #e74c3c;">«Кітап жоқ» деп хабарлау</div>
+                            <div class="arrow"></div>
+                            <div class="terminal">АЯҚТАУ</div>
+                        </div>
+
+                        <div class="branch">
+                            <div class="branch-label">ИӘ</div>
+                            <div class="arrow"></div>
+                            <div class="decision">
+                                <div class="decision-text">Қарызы<br>бар ма?</div>
+                            </div>
+                            <div style="display: flex; gap: 20px;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                    <div class="branch-label">ИӘ</div>
+                                    <div class="arrow"></div>
+                                    <div class="process" style="background: #e67e22;">«Қарызды өтеңіз»</div>
+                                    <div class="arrow"></div>
+                                    <div class="terminal">АЯҚТАУ</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                    <div class="branch-label">ЖОҚ</div>
+                                    <div class="arrow"></div>
+                                    <div class="process" style="background: #27ae60;">Кітапты беру және тіркеу</div>
+                                    <div class="arrow"></div>
+                                    <div class="terminal">АЯҚТАУ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-top: 30px; padding: 20px; background: #ecf0f1; border-radius: 8px;">
+            <h3>💡 Қорытынды</h3>
+            <p>Матрицалық құрылым және блок-схемалар – қазіргі заманғы ұйымдардың және процестерді басқарудың негізгі құралдары. Олар күрделі жүйелерді түсінуге, талдауға және оңтайландыруға көмектеседі.</p>
+        </section>
+    </div>
+
+    <script>
+        // JavaScript қосымша интерактивтілік үшін (қажет болса)
+        document.querySelectorAll('.decision, .process, .terminal').forEach(elem => {
+            elem.addEventListener('click', function() {
+                this.style.transform = this.style.transform === 'scale(1.1)' ? 'scale(1)' : 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
